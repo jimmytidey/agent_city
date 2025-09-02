@@ -1,0 +1,11 @@
+/* Hide the chat composer (textarea + buttons) */
+textarea[placeholder*="Type your message"] { display: none !important; }
+
+/* Hide its container row as well (works on the current UI) */
+form:has(textarea[placeholder*="Type your message"]) { display: none !important; }
+
+/* Optional: also hide “New chat” etc. if you want a pure read-only screen */
+#new-chat-button { display: none !important; } 
+
+#message-composer { display: none !important; }
+#message-composer-buttons { display: none !important; }
