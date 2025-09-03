@@ -10,7 +10,7 @@ class ResidentReasoningAgent:
     in plain language. It does NOT return coordinates or JSON — just reasoning.
     """
 
-    def __init__(self, model: str = "gpt-4o-mini", temperature: float = 1):
+    def __init__(self, model: str = "gpt-5", temperature: float = 1):
         self.model = model
         self.temperature = temperature
         # Uses OPENAI_API_KEY from env
@@ -27,7 +27,7 @@ class ResidentReasoningAgent:
             "- Concise bullet points, then a 1–2 sentence recommendation.\n"
             "- Do not mention the numbering scheme.\n"
             "- Reply as though you are concerned resident, protecting forest, rivers and, most of all, existing houses.\n"
-            "- Make explicit reference to previous developer proposals in the negotiation_history and proposed_grid.\n"
+            "- Make explicit reference to previous developer proposals in the negotiation history and.\n"
             "- If previous proposals are provided in the negotiation history, bargain with the developer to get the new, proposed houses as far away from te existing houses as possible.\n"
             "- If previous proposals seem acceptable, agree to them. State that you agree and propose the same map.\n"   
 

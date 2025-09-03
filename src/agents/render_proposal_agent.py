@@ -6,7 +6,7 @@ import chainlit as cl
 from utils import numbers_to_emojis, apply_cells_as_new_houses, update_msg
 
 class RenderProposalAgent:
-    def __init__(self, model: str = "gpt-4o-mini", client: Optional[AsyncOpenAI] = None):
+    def __init__(self, model: str = "gpt-5", client: Optional[AsyncOpenAI] = None):
         self.model = model
         self.client = client or AsyncOpenAI()
 
