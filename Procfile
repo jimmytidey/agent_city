@@ -1,1 +1,1 @@
-web: PYTHONPATH=src chainlit run src/main.py --port $PORT
+web: PYTHONPATH=src chainlit run src/main.py -h --port $PORT
