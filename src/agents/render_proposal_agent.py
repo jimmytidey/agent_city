@@ -10,10 +10,10 @@ class RenderProposalAgent:
         self.model = model
         self.client = client or AsyncOpenAI()
 
-    async def render_proposal(self, grid: List[List[int]], context: Optional[str] = None) -> Dict[str, Any]:
+    async def render_proposal(self, grid: List[List[int]], prosposal_as_text: Optional[str] = None) -> Dict[str, Any]:
         """
         rows: 10x20 grid of ints {0,1,2,3}
-        context: optional textual rationale from DeveloperReasoningAgent to guide proposal
+        context: str (optional) - reasoning from the reasoning agent
         returns: {"cells": [[r,c], ... 8 total], "justification": "..."}
         """
 
@@ -23,17 +23,22 @@ class RenderProposalAgent:
         system_msg = {
             "role": "system",
             "content": (
-                "You are an assistant that generates housing proposals on a 10x20 grid. "
+                "You are an assistant that generates housing proposals on a 10x20 grid."
+                "You are given the textual reasoning from a resident or developer agent about where to place new houses as the variable: prosposal_as_text"
                 "You must strictly return JSON with the following structure:\n\n"
                 "{\n"
                 "  \"cells\": [[row, col], [row, col], ...],\n"
-                "  \"justification\": \"Your justification here.\"\n"
                 "}\n\n"
                 "Rules:\n"
                 "- The 'cells' key must contain exactly 8 unique [row, col] pairs.\n"
                 "- Each [row, col] pair must be within the grid bounds.\n"
+                "- coordinates are zero indexed"
                 "- The 'justification' key must explain why these cells were chosen.\n"
                 "Do not include any additional text outside the JSON structure."
+                "Example: \n"
+                "Given grid:    [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 2, 2, 2, 2], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 2, 2, 2, 2, 2], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 2, 0, 0, 2, 2], [0, 0, 0, 3, 3, 3, 3, 0, 0, 0, 1, 1, 1, 1, 0, 0, 2, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0], [0, 0, 0, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 2, 2, 0, 0], [0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]] \n \n "
+                "And proposal_as_text: The best place for houses is close to the existing houses on the bottom two rows on the right, aligned with the water. \n"
+                "You might reply with: {\"cells\": [[8, 15], [8, 16], [8, 17], [8, 18], [9, 15], [9, 16], [9, 17], [9, 18]]}"
             )
         }
 
@@ -41,6 +46,7 @@ class RenderProposalAgent:
             "role": "user",
             "content": json.dumps({
                 "task": "Propose 8 cells for new houses on the map. NEVER place houses on river or existing houses.",
+                "prosposal_as_text": prosposal_as_text,
                 "legend": {"0": "grass", "1": "forest", "2": "river", "3": "existing house", "10": "new house"},
                 "grid_shape": [len(grid), len(grid[0]) if grid else 0],
                 "grid": grid,
@@ -50,9 +56,9 @@ class RenderProposalAgent:
                     "avoid": [1, 2, 3],                    
                     "clustered": True,
                     "avoid_river_cells": True,   # Do not overwrite river cells
-                    "prefer_adjacent_to_river": True
+                    "avoid_existing_houses": True # Do not overwrite existing houses
                 },
-                "context_from_reasoning_agent": context or "No additional context provided."
+                
             })
         }
 

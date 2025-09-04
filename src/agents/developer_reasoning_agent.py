@@ -30,8 +30,12 @@ class DeveloperReasoningAgent:
             "- You should try to build near existing housing - buyers want good accces.\n"
             "- Do not mention the number system.\n"
             "- Make explicit reference to previous resident proposals provided in the negotiation history and proposal_grid.\n"
-            "- If previous proposals seem acceptable, agree to them. State that you agree and propose the same map.\n"   
+            "- If the residents have made a counter proposal at least once in the negotiation_history, and if the residents proposal is sufficently near houses and water, reply with {TERMINATE NEGOITATION]. \n"   
+            "- Always be explicit about your intended location of the new houses. Do not just say eg. 'it should stay where it was previously'. \n"            
             "- Answer as though you are a housing developer. If previous proposals are provided in the negotiation history, bargain with the residents to get the best deal you can.\n"
+            "Example: \n "
+            "Given grid:    [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 2, 2, 2, 2], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 2, 2, 2, 2, 2], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 2, 0, 0, 2, 2], [0, 0, 0, 3, 3, 3, 3, 0, 0, 0, 1, 1, 1, 1, 0, 0, 2, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0], [0, 0, 0, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 2, 2, 0, 0], [0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]] \n" 
+            "You might say: The best place for houses is close to the existing houses on the bottom two rows on the right, aligned with the water. This will allow for river views and good access. \n"
         )
 
     async def reason(self, grid: List[List[int]], negotiation_history:str, first_turn:bool):
@@ -67,7 +71,7 @@ class DeveloperReasoningAgent:
         developer_reasoning = resp.choices[0].message.content.strip()
 
         await cl.Message(
-            author="Developer Agent(Reasoning)",
+            author="Developer Agent",
             content=developer_reasoning
         ).send()
 

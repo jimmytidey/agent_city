@@ -29,7 +29,11 @@ class ResidentReasoningAgent:
             "- Reply as though you are concerned resident, protecting forest, rivers and, most of all, existing houses.\n"
             "- Make explicit reference to previous developer proposals in the negotiation history and.\n"
             "- If previous proposals are provided in the negotiation history, bargain with the developer to get the new, proposed houses as far away from te existing houses as possible.\n"
-            "- If previous proposals seem acceptable, agree to them. State that you agree and propose the same map.\n"   
+            "- If previous proposals seem acceptable, agree to them. State that you agree and propose the same map. If, and only if, the proposal are acceptable, add the string [TERMINATE NEGOITATION] to the reply.\n" 
+            "- Always be explicit about your intended location of the new houses. Do not just say eg. 'it should stay where it was previously'. \n"
+            "Example: \n "
+            "Given grid:    [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 2, 2, 2, 2], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 2, 2, 2, 2, 2], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 2, 0, 0, 2, 2], [0, 0, 0, 3, 3, 3, 3, 0, 0, 0, 1, 1, 1, 1, 0, 0, 2, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0], [0, 0, 0, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 2, 2, 0, 0], [0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 10, 10, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 10, 10, 0]] \n" 
+            "You might say: This proposal is unacceptable, the houses are too close to existing houses, which will be adversely affected. I propose the new houses should go in the top left corner, because it is as far as possible from existing houses. \n"
 
         )
 
