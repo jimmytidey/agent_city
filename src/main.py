@@ -24,10 +24,16 @@ async def start():
 
     # 1) Build city
     heading = '''
+        AGENT CITY 
+        ==========
+
         A map builder agent will generate a map with houses, grassland, tress and water. 
+        
         Two other agents - representing a developer and existing residents will then negotiate over where to place a new 8-cell housing block.
+        
         The developer agent's goal is to build near existing houses and near water.
-        The resident agent negotiates to keep houses away from existing houses.
+        
+        The resident agent negotiates to keep new houses away from existing houses.
     '''
     await cl.Message(author="city_builder_agent", content=heading).send()    
     city = await city_builder_agent.build_city_json()
